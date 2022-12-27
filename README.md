@@ -27,4 +27,4 @@ Insert the HTML for the chart:
 </x-chart>
 ```
 
-See [examples](examples.html).
+See [examples](https://jbmorley.github.io/x-chart/).
