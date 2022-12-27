@@ -10,9 +10,6 @@ class VisualChart extends HTMLElement {
           childList: true
         });
 
-        this.canvas = document.createElement('canvas');
-        this.appendChild(this.canvas);
-
         const type = this.getAttribute("type");
         var config = {}
         if (type == "bar" || type == "line") {
@@ -30,10 +27,23 @@ class VisualChart extends HTMLElement {
             };
         } else if (type == "pie") {
             config = {
-                type: this.getAttribute("type"),
+                type: 'pie',
                 data: {},
                 options: {
                     plugins: {},
+                }
+            };
+        } else if (type == "stacked-area") {
+            config = {
+                type: 'line',
+                data: {},
+                options: {
+                    plugins: {},
+                    scales: {
+                        y: {
+                            stacked: true,
+                        }
+                    }
                 }
             };
         } else {
@@ -57,6 +67,8 @@ class VisualChart extends HTMLElement {
             };
         }
 
+        this.canvas = document.createElement('canvas');
+        this.appendChild(this.canvas);
         this.chart = new Chart(this.canvas, config);
     }
 
@@ -73,6 +85,7 @@ class VisualChart extends HTMLElement {
                         label: node.getAttribute("data-label"),
                         data: node.getAttribute("data-values").split(",").map(Number),
                         borderWidth: 1,
+                        fill: this.getAttribute("type") == "stacked-area",
                     }
                     chart.data.datasets.push(dataset);
                     chart.update();
