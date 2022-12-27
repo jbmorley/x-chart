@@ -1,4 +1,4 @@
-class VisualChart extends HTMLElement {
+class XChart extends HTMLElement {
 
     connectedCallback() {
         if (!this.isConnected) {
@@ -70,6 +70,10 @@ class VisualChart extends HTMLElement {
         this.canvas = document.createElement('canvas');
         this.appendChild(this.canvas);
         this.chart = new Chart(this.canvas, config);
+
+        for (const node of this.children) {
+            this.process(node);
+        }
     }
 
     disconnectedCallback() {
@@ -77,27 +81,32 @@ class VisualChart extends HTMLElement {
     }
 
     onMutation(mutations) {
-        const chart = this.chart;
         for (const mutation of mutations) {
             for (const node of mutation.addedNodes) {
-                if (node.tagName == "VISUAL-CHART-DATASET") {
-                    let dataset = {
-                        label: node.getAttribute("data-label"),
-                        data: node.getAttribute("data-values").split(",").map(Number),
-                        borderWidth: 1,
-                        fill: this.getAttribute("type") == "stacked-area",
-                    }
-                    chart.data.datasets.push(dataset);
-                    chart.update();
-                } else if (node.tagName == "VISUAL-CHART-LABELS") {
-                    chart.data.labels = node.getAttribute("data-values").split(",").map(function(value) { return value.trim() });
-                    chart.update();
-                } else if (node.tagName == "VISUAL-CHART-ALTERNATIVE") {
-                    this.removeChild(node);
-                }
+                this.process(node);
             }
         }
     }
+
+    process(node) {
+        const chart = this.chart;
+        if (node.tagName == "X-CHART-DATASET") {
+            let dataset = {
+                label: node.getAttribute("data-label"),
+                data: node.getAttribute("data-values").split(",").map(Number),
+                borderWidth: 1,
+                fill: this.getAttribute("type") == "stacked-area",
+            }
+            chart.data.datasets.push(dataset);
+            chart.update();
+        } else if (node.tagName == "X-CHART-LABELS") {
+            chart.data.labels = node.getAttribute("data-values").split(",").map(function(value) { return value.trim() });
+            chart.update();
+        } else if (node.tagName == "X-CHART-ALTERNATIVE") {
+            this.removeChild(node);
+        }
+    }
+
 }
 
-customElements.define('visual-chart', VisualChart);
+customElements.define('x-chart', XChart);
