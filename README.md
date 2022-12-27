@@ -1,6 +1,6 @@
 # `x-chart`
 
-Simple HTML extensions for generating charts
+HTML extensions for generating Chart.js charts
 
 ## Usage
 
