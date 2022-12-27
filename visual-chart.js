@@ -92,6 +92,8 @@ class VisualChart extends HTMLElement {
                 } else if (node.tagName == "VISUAL-CHART-LABELS") {
                     chart.data.labels = node.getAttribute("data-values").split(",").map(function(value) { return value.trim() });
                     chart.update();
+                } else if (node.tagName == "VISUAL-CHART-ALTERNATIVE") {
+                    this.removeChild(node);
                 }
             }
         }
