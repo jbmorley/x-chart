@@ -1,5 +1,7 @@
 class XChart extends HTMLElement {
 
+
+
     connectedCallback() {
         if (!this.isConnected) {
             return;
@@ -17,7 +19,12 @@ class XChart extends HTMLElement {
                 type: this.getAttribute("type"),
                 data: {},
                 options: {
-                    plugins: {},
+                    plugins: {
+                        colors: {
+                            enabled: true,
+                            forceOverride: true,
+                        }
+                    },
                     scales: {
                         y: {
                             beginAtZero: true
@@ -38,7 +45,17 @@ class XChart extends HTMLElement {
                 type: 'line',
                 data: {},
                 options: {
-                    plugins: {},
+                    plugins: {
+                        colors: {
+                            enabled: true,
+                            forceOverride: true,
+                        }
+                    },
+                    interaction: {
+                        mode: 'nearest',
+                        axis: 'x',
+                        intersect: false,
+                    },
                     scales: {
                         y: {
                             stacked: true,
@@ -96,6 +113,7 @@ class XChart extends HTMLElement {
                 data: node.getAttribute("data-values").split(",").map(Number),
                 borderWidth: 1,
                 fill: this.getAttribute("type") == "stacked-area",
+                pointRadius: 0,
             }
             chart.data.datasets.push(dataset);
             chart.update();
